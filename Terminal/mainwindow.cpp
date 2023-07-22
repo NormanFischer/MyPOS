@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "core/item.h"
 #include <iostream>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -28,8 +29,6 @@ MainWindow::MainWindow(QWidget *parent)
     transactionTable->setHorizontalHeaderItem(4, new QTableWidgetItem("SUBTOTAL"));
     transactionRow = 0;
 
-
-
     layout->addWidget(transactionTable);
     layout->addWidget(skuEntry);
     layout->addWidget(enterSku);
@@ -44,7 +43,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::handleEnterSku() {
     QString skuText = skuEntry->text();
+    Item *toAdd = new Item("Test item", 1000);
+    QString itemName = QString::fromStdString(toAdd->getItemName());
+
+    skuEntry->setText("");
     transactionTable->insertRow(transactionTable->rowCount());
-    transactionTable->setItem(transactionTable->rowCount() - 1, 0, new QTableWidgetItem("Item added"));
+    transactionTable->setItem(transactionTable->rowCount() - 1, 0, new QTableWidgetItem(itemName));
 }
 
