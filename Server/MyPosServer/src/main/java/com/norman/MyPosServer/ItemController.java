@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
 @RestController
+//TODO: CHANGE THIS
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping(path="/items")
 public class ItemController {
     @Autowired
