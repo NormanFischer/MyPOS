@@ -1,12 +1,15 @@
 package com.norman.MyPosServer;
 
+import java.sql.PreparedStatement;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping(path="/items")
 public class ItemController {
-
     @Autowired
     private ItemRepository itemRepository;
 
@@ -35,5 +38,19 @@ public class ItemController {
             sb.append(itemRepository.findAll());
         }
         return sb.toString();
+    }
+
+    @GetMapping(path="/getItems/{filter}/{query}")
+    public ResponseEntity<?> getItemsByQuery(@PathVariable String filter, @PathVariable String query) {
+        switch (filter) {
+            case "SKU":
+                return ResponseEntity.ok(itemRepository.listBySku(query));
+            case "NAME":
+                return ResponseEntity.ok(itemRepository.listByName(query));
+            case "COST":
+                //TODO
+            default:
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid filter type requested");
+        }
     }
 }
