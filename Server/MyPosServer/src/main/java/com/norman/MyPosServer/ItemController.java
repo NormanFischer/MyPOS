@@ -2,8 +2,11 @@ package com.norman.MyPosServer;
 
 import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
@@ -17,19 +20,24 @@ public class ItemController {
 
     @PostMapping(path="/createItem")
     public @ResponseBody String createItem(
-        @RequestParam String sku,
-        @RequestParam String name,
-        @RequestParam int initialQuantity,
-        @RequestParam int cost
+        @RequestBody Item item
     ) {
-        Item i = new Item();
-        i.setSku(sku);
-        i.setItemName(name);
-        i.setQuantity(initialQuantity);
-        i.setCost(cost);
-
-        itemRepository.save(i);
+        itemRepository.save(item);
         return "New item created";
+    }
+
+    @DeleteMapping(path="/deleteItem", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteItem(@RequestParam String sku) {
+        System.out.println("User requested to delete item");
+        Optional<Integer> idToDelete = itemRepository.getBySku(sku);
+        if (idToDelete.isPresent()) {
+            itemRepository.deleteById(idToDelete.get());
+            System.out.println("Item deleted");
+            return ResponseEntity.ok("{\"response\": \"Item deleted\"}");
+        } else {
+            System.out.println("User requested to delete but sku was not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Requested to delete but sku was not found");
+        }
     }
 
     @GetMapping(path="/getAll")

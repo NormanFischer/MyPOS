@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-
-
 function TableRow(props: Item) {
     const {sku, itemName, cost} = props;
     return(
@@ -20,8 +18,7 @@ function DatabaseExplorer() {
     const [items, setItems] = useState<Item[]>([]);
 
     async function applyFilter() {
-        //TODO: Change item server port
-        const url = `http://localhost:8080/items/getItems/${selectedFilter}/${query}`;
+        const url = `/items/getItems/${selectedFilter}/${query}`;
         console.log(url);
         const res = await fetch(url);
         const json = await res.json();

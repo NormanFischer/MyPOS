@@ -1,12 +1,19 @@
 import { useState } from "react";
 import DatabaseExplorer from "./DatabaseExplorer";
-import AddItemPopup from "./AddItemPopup";
+import PopUp from "./PopUp";
+import AddItemPopupContent from "./AddItemPopupContent";
+import DeleteItemPopupContent from "./DeleteItemPopupContent";
 
 function Items() {
-    const [isOn, toggleIsOn] = useState(false);
+    const [addItemIsOn, toggleAddItemIsOn] = useState(false);
+    const [deleteItemIsOn, toggleDeleteItemIsOn] = useState(false);
 
     function handleAddItemButtonClick() {
-        toggleIsOn(!isOn);
+        toggleAddItemIsOn(!addItemIsOn);
+    }
+
+    function handleDeleteItemButtonClick() {
+        toggleDeleteItemIsOn(!deleteItemIsOn);
     }
 
     return (
@@ -14,7 +21,13 @@ function Items() {
             <h1>Items</h1>
             <DatabaseExplorer />
             <button onClick={handleAddItemButtonClick}>Add Item</button>
-            <AddItemPopup isOn={isOn} handleAddItemButtonClick={handleAddItemButtonClick}/>
+            <button onClick={handleDeleteItemButtonClick}>Delete Item</button>
+            <PopUp isOn={addItemIsOn}>
+                <AddItemPopupContent handleAddItemButtonClick={handleAddItemButtonClick}/>
+            </PopUp>
+            <PopUp isOn={deleteItemIsOn}>
+                <DeleteItemPopupContent handleDeleteItemButtonClick={handleDeleteItemButtonClick}/>
+            </PopUp>
         </>
     )
 }
