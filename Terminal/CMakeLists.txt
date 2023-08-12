@@ -14,6 +14,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
+# Find libcurl package
+find_package(CURL REQUIRED)
+
+
+
 set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
@@ -24,6 +29,8 @@ set(PROJECT_SOURCES
         core/transaction.cpp
         core/transaction.h
         core/user.h
+        core/HttpClient.h
+        core/HttpClient.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -49,6 +56,8 @@ else()
     endif()
 endif()
 
+# Link libcurl to your project
+target_link_libraries(MyPOS PRIVATE CURL::libcurl)
 target_link_libraries(MyPOS PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
 set_target_properties(MyPOS PROPERTIES

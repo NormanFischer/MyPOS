@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <QPushButton>
 #include "mainwindow.h"
+#include "core/HttpClient.h"
 #include <QPlainTextEdit>
 #include <QVBoxLayout>
 #include <QTableWidget>
@@ -13,8 +14,10 @@
 
 int main(int argc, char *argv[])
 {
+    HttpClient client;
+    client.create_curl_handle();
     QApplication a(argc, argv);
-    MainWindow mainWindow;
+    MainWindow mainWindow(&client);
     mainWindow.showMaximized();
     return a.exec();
 }

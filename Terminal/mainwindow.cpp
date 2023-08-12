@@ -1,12 +1,15 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "core/HttpClient.h"
 #include "core/item.h"
 #include <iostream>
+#include <curl/curl.h>
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(HttpClient *client, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+
     QWidget *main = new QWidget(this);
     setCentralWidget(main);
 
