@@ -16,6 +16,9 @@ public interface ItemRepository extends CrudRepository<Item, Integer> {
     List<Item> listByName(String itemName);
 
     @Query(value = "SELECT id FROM item WHERE sku = ?1", nativeQuery = true)
-    Optional<Integer> getBySku(String sku);
+    Optional<Integer> getIDBySku(String sku);
+
+    @Query(value = "SELECT * FROM item WHERE sku = ?1", nativeQuery = true)
+    Optional<Item> getItemBySku(String sku);
 
 }

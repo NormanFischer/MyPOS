@@ -4,10 +4,12 @@
 #include "core/item.h"
 #include <iostream>
 #include <curl/curl.h>
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 MainWindow::MainWindow(HttpClient *client, QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::MainWindow), client(client)
 {
 
     QWidget *main = new QWidget(this);
@@ -45,12 +47,21 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::handleEnterSku() {
-    QString skuText = skuEntry->text();
-    Item *toAdd = new Item("Test item", 1000);
-    QString itemName = QString::fromStdString(toAdd->getItemName());
+    std::string url = "http://localhost:8080/items/getItemBySku/test3";
+    std::string jsonStr= client->fetch(url);
+    json j = json::parse(jsonStr);
+    QString itemSku = QString::fromStdString(j["sku"]);
+    QString itemName = QString::fromStdString(j["itemName"]);
+    int quantity = j["quantity"];
+    int cost = j["cost"];
+    QString quantityStr = QString::fromStdString(std::to_string(quantity));
+    QString costStr = QString::fromStdString(std::to_string(cost));
 
     skuEntry->setText("");
     transactionTable->insertRow(transactionTable->rowCount());
-    transactionTable->setItem(transactionTable->rowCount() - 1, 0, new QTableWidgetItem(itemName));
+    transactionTable->setItem(transactionTable->rowCount() - 1, 0, new QTableWidgetItem(itemSku));
+    transactionTable->setItem(transactionTable->rowCount() - 1, 1, new QTableWidgetItem(itemName));
+    transactionTable->setItem(transactionTable->rowCount() - 1, 2, new QTableWidgetItem(quantityStr));
+    transactionTable->setItem(transactionTable->rowCount() - 1, 3, new QTableWidgetItem(costStr));
 }
 

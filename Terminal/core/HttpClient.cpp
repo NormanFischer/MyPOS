@@ -12,7 +12,8 @@ void HttpClient::create_curl_handle() {
     this->curl = curl_easy_init();
 }
 
-void HttpClient::fetch(std::string &url) {
+std::string HttpClient::fetch(std::string &url) {
+    std::cout << "Fetch requested!" << std::endl;
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 
     std::string response;
@@ -22,12 +23,12 @@ void HttpClient::fetch(std::string &url) {
     CURLcode res = curl_easy_perform(curl);
     if (res != CURLE_OK) {
         std::cerr << "Failed to perform request: " << curl_easy_strerror(res) << std::endl;
+        return "";
     } else {
         std::cout << "Fetched content:" << std::endl;
         std::cout << response << std::endl;
+        return response;
     }
-
-
 }
 
 size_t HttpClient::WriteCallback(void* contents, size_t size, size_t nmemb, void* userptr) {
@@ -37,7 +38,6 @@ size_t HttpClient::WriteCallback(void* contents, size_t size, size_t nmemb, void
 
 HttpClient::~HttpClient()
 {
-
     curl_global_cleanup();
 }
 

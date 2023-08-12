@@ -29,7 +29,7 @@ public class ItemController {
     @DeleteMapping(path="/deleteItem", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> deleteItem(@RequestParam String sku) {
         System.out.println("User requested to delete item");
-        Optional<Integer> idToDelete = itemRepository.getBySku(sku);
+        Optional<Integer> idToDelete = itemRepository.getIDBySku(sku);
         if (idToDelete.isPresent()) {
             itemRepository.deleteById(idToDelete.get());
             System.out.println("Item deleted");
@@ -48,6 +48,16 @@ public class ItemController {
             sb.append(itemRepository.findAll());
         }
         return sb.toString();
+    }
+
+    @GetMapping(path="/getItemBySku/{sku}")
+    public ResponseEntity<?> getItemBySku(@PathVariable String sku) {
+        Optional<Item> op = itemRepository.getItemBySku(sku);
+        if (op.isPresent()) {
+            return ResponseEntity.ok(op.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not find item with provided sku");
+        }
     }
 
     @GetMapping(path="/getItems/{filter}/{query}")

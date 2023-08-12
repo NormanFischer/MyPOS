@@ -17,6 +17,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 # Find libcurl package
 find_package(CURL REQUIRED)
 
+find_package(nlohmann_json 3.2.0 REQUIRED)
 
 
 set(PROJECT_SOURCES
@@ -57,6 +58,7 @@ else()
 endif()
 
 # Link libcurl to your project
+target_link_libraries(MyPOS PRIVATE nlohmann_json::nlohmann_json)
 target_link_libraries(MyPOS PRIVATE CURL::libcurl)
 target_link_libraries(MyPOS PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 

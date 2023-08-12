@@ -13,7 +13,7 @@ public:
     HttpClient();
     void create_curl_handle();
     void cleanup_curl();
-    void fetch(std::string &url);
+    std::string fetch(std::string &url);
     ~HttpClient();
 };
 
