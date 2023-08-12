@@ -94,3 +94,19 @@ button:focus-visible {
   transform: translate(-50%, -50%);
 }
 
+.tableContainer {
+  height: 300px;
+  max-height: 300px;
+  overflow-y: scroll;
+}
+
+table {
+  width: 100%;
+}
+
+#dbTable thead th {
+  position: sticky;
+  top: 0;
+}
+
+

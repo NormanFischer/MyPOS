@@ -49,9 +49,10 @@ function DatabaseExplorer() {
                 <option value="NAME">Item Name</option>
             </select>
 
-            <button onClick={async() => { await applyFilter(); }}>Apply Filter</button>
+            <button onClick={async() => { await applyFilter(); }}>Apply Filter</button> 
 
-            <table>
+            <div className="tableContainer">
+            <table id="dbTable">
                 <thead>
                     <tr>
                         <th>SKU #</th>
@@ -59,6 +60,7 @@ function DatabaseExplorer() {
                         <th>Item Cost</th>
                     </tr>
                 </thead>
+                
                 <tbody>
                     {
                         items.map(row => {
@@ -66,7 +68,11 @@ function DatabaseExplorer() {
                         })
                     }
                 </tbody>
+                
             </table>
+            </div>
+            
+            
         </>
     )
 }
