@@ -5,6 +5,7 @@
 #include <iostream>
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
+
 using json = nlohmann::json;
 
 MainWindow::MainWindow(HttpClient *client, QWidget *parent)
@@ -47,8 +48,12 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::handleEnterSku() {
-    std::string url = "http://localhost:8080/items/getItemBySku/test3";
-    std::string jsonStr= client->fetch(url);
+    std::string skuToReq = skuEntry->text().toStdString();
+    std::string url = "http://localhost:8080/items/getItemBySku/" + skuToReq;
+
+    HttpResponse fetchResponse = client->fetch(url);
+    std::string jsonStr = fetchResponse.body;
+
     json j = json::parse(jsonStr);
     QString itemSku = QString::fromStdString(j["sku"]);
     QString itemName = QString::fromStdString(j["itemName"]);

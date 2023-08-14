@@ -3,6 +3,10 @@
 #ifndef HTTPCLIENT_H
 #define HTTPCLIENT_H
 
+struct HttpResponse {
+    long statusCode;
+    std::string body;
+};
 
 class HttpClient
 {
@@ -13,7 +17,7 @@ public:
     HttpClient();
     void create_curl_handle();
     void cleanup_curl();
-    std::string fetch(std::string &url);
+    HttpResponse fetch(std::string &url);
     ~HttpClient();
 };
 

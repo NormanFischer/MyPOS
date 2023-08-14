@@ -12,22 +12,26 @@ void HttpClient::create_curl_handle() {
     this->curl = curl_easy_init();
 }
 
-std::string HttpClient::fetch(std::string &url) {
-    std::cout << "Fetch requested!" << std::endl;
+HttpResponse HttpClient::fetch(std::string &url) {
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 
-    std::string response;
+    std::string body;
+    long statusCode;
+
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &body);
 
     CURLcode res = curl_easy_perform(curl);
+    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &statusCode);
+
     if (res != CURLE_OK) {
         std::cerr << "Failed to perform request: " << curl_easy_strerror(res) << std::endl;
-        return "";
+        return HttpResponse {-1, "CURL_FAIL"};
     } else {
+
         std::cout << "Fetched content:" << std::endl;
-        std::cout << response << std::endl;
-        return response;
+        std::cout << body << std::endl;
+        return HttpResponse {statusCode, body};
     }
 }
 

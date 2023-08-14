@@ -1,7 +1,5 @@
 package com.norman.MyPosServer;
 
-import java.sql.PreparedStatement;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +9,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
 @RestController
-//TODO: CHANGE THIS
-@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping(path="/items")
 public class ItemController {
-    @Autowired
+
+    @GetMapping
+    public String redirect() {
+        return "/index.html";
+    }
+
     private ItemRepository itemRepository;
 
     @PostMapping(path="/createItem")
