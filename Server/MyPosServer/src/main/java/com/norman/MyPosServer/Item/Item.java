@@ -1,4 +1,4 @@
-package com.norman.MyPosServer;
+package com.norman.MyPosServer.Item;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
