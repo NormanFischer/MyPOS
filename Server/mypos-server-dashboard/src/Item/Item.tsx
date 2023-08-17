@@ -1,5 +1,3 @@
-import DatabaseTable from "./Table/DatabaseTable";
-
 export type Item = {
     sku: string,
     itemName: string,

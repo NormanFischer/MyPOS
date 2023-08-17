@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { currencyStringToNum, numToCurrencyString } from "./util";
+import { currencyStringToNum, numToCurrencyString } from "../util";
 
 function AddItemPopupContent(props: {handleAddItemButtonClick: Function}) {
     

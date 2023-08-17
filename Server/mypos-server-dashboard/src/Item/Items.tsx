@@ -1,9 +1,9 @@
 import { useState } from "react";
 import ItemExplorer from "./ItemExplorer";
-import PopUp from "./PopUp";
+import PopUp from "../PopUp";
 import AddItemPopupContent from "./AddItemPopupContent";
 import DeleteItemPopupContent from "./DeleteItemPopupContent";
-import DatabaseExplorer from "./DatabaseExplorer";
+import DatabaseExplorer from "../DatabaseExplorer";
 
 function Items() {
     const [addItemIsOn, toggleAddItemIsOn] = useState(false);

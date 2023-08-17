@@ -8,7 +8,6 @@ function TableRow<T extends Record<string, any>>(props: {data: T}) {
                     return(<td>{props.data[prop]}</td>);
                 })
             }
-            
         </tr>
     )
 }
