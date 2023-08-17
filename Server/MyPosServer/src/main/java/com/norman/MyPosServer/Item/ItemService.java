@@ -1,5 +1,6 @@
 package com.norman.MyPosServer.Item;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.norman.MyPosServer.InvalidItemQueryTypeException;
 import com.norman.MyPosServer.ItemQueryType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import java.util.Optional;
 
 @Service
 public class ItemService {
-    private final ItemRepository itemRepository;
+    private ItemRepository itemRepository;
 
     @Autowired
     public ItemService(ItemRepository itemRepository) {
@@ -40,8 +41,9 @@ public class ItemService {
         return op;
     }
 
-    public List<Item> getItemsByQuery(String query, String queryType) throws IllegalArgumentException {
-        ItemQueryType queryTypeObj = ItemQueryType.valueOf(queryType);
+    public List<Item> getItemsByQuery(String filter, String query) throws IllegalArgumentException {
+        System.out.println("Get items by query requested!" + filter);
+        ItemQueryType queryTypeObj = ItemQueryType.valueOf(filter);
         if (queryTypeObj == null) {
             throw new NullPointerException("Null query type requested");
         }

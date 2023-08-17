@@ -35,4 +35,8 @@ public class Authority implements GrantedAuthority {
         return user;
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
 }

@@ -1,36 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import DatabaseTable from "./Table/DatabaseTable";
 
-function TableRow(props: Item) {
-    const {sku, itemName, cost} = props;
-    return(
-        <tr>
-            <td>{sku}</td>
-            <td>{itemName}</td>
-            <td>{cost}</td>
-        </tr>
-    );
-}
-
-function DatabaseExplorer() {
-
-    const [selectedFilter, setCurrentFilter] = useState("SKU");
+function DatabaseExplorer<T extends Record<string, any>>(props: { dataType: new () => T, apiEndpoint: string}) {
     const [query, setQuery] = useState("");
-    const [items, setItems] = useState<Item[]>([]);
+    const [validFilters, setValidFilters] = useState<string[]>([]);
+    //TODO: Change this!
+    const [selectedFilter, setCurrentFilter] = useState("SKU");
+    const [objs, setObjs] = useState<T[]>([]);
+    
+    useEffect(() => {
+        setValidFilters(getValidFilters());
+    }, []);
 
-    async function applyFilter() {
-        const url = `/items/getItems/${selectedFilter}/${query}`;
-        console.log(url);
-        const res = await fetch(url);
-        const json = await res.json();
-        let resultList: Item[] = [];
-
-        for (const obj of json) {
-            console.log(obj);
-            const toAdd: Item = {sku: obj.sku, itemName: obj.itemName, cost: obj.cost, quantity: obj.quantity};
-            console.log(toAdd);
-            resultList.push(toAdd);
+    function getValidFilters(): string[] {
+        //TODO: More filter support
+        console.log("Get valid filters called")
+        let ans = [];
+        const instance: T = new props.dataType;
+        for(const property in instance) {
+            if(typeof instance[property] === "string") {
+                ans.push(property.toString());
+            }
         }
-        setItems(resultList);
+        return ans;
+    }
+
+    function applyFilter() {
+        const url = `${props.apiEndpoint}/${selectedFilter}/${query}`;
+        fetch(url)
+        .then(res => res.json())
+        .then(json => {
+            setObjs(json);
+        });
     }
 
     function handleFilterChange(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -43,38 +44,19 @@ function DatabaseExplorer() {
 
     return(
         <>
-            <input value={query} onChange={handleSearchChange} placeholder="Enter search term..."></input>
+        <input value={query} onChange={handleSearchChange} placeholder="Enter search term..."></input>
             <select value={selectedFilter} onChange={handleFilterChange}>
-                <option value="SKU">SKU</option>
-                <option value="NAME">Item Name</option>
+                {
+                    validFilters.map((opt) => {
+                        return <option value={opt.toUpperCase()}>{opt}</option>
+                    })
+                }
             </select>
 
-            <button onClick={async() => { await applyFilter(); }}>Apply Filter</button> 
-
-            <div className="tableContainer">
-            <table id="dbTable">
-                <thead>
-                    <tr>
-                        <th>SKU #</th>
-                        <th>Item Name</th>
-                        <th>Item Cost</th>
-                    </tr>
-                </thead>
-                
-                <tbody>
-                    {
-                        items.map(row => {
-                            return <TableRow sku={row.sku} itemName={row.itemName} cost={row.cost} quantity={row.quantity} />
-                        })
-                    }
-                </tbody>
-                
-            </table>
-            </div>
-            
-            
+            <button onClick={async() => { applyFilter(); }}>Apply Filter</button> 
+        <DatabaseTable dataType={props.dataType} objs={objs}/>
         </>
-    )
+    );
 }
 
 export default DatabaseExplorer;

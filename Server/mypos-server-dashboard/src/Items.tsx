@@ -1,8 +1,9 @@
 import { useState } from "react";
-import DatabaseExplorer from "./DatabaseExplorer";
+import ItemExplorer from "./ItemExplorer";
 import PopUp from "./PopUp";
 import AddItemPopupContent from "./AddItemPopupContent";
 import DeleteItemPopupContent from "./DeleteItemPopupContent";
+import DatabaseExplorer from "./DatabaseExplorer";
 
 function Items() {
     const [addItemIsOn, toggleAddItemIsOn] = useState(false);
@@ -19,7 +20,7 @@ function Items() {
     return (
         <>
             <h1>Items</h1>
-            <DatabaseExplorer />
+            <ItemExplorer/>
             <button onClick={handleAddItemButtonClick}>Add Item</button>
             <button onClick={handleDeleteItemButtonClick}>Delete Item</button>
             <PopUp isOn={addItemIsOn}>
