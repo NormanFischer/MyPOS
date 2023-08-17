@@ -4,6 +4,9 @@ import com.norman.MyPosServer.User.User;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 public class Authority implements GrantedAuthority {
     @Id

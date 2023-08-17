@@ -2,6 +2,10 @@ package com.norman.MyPosServer.User;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
+import java.util.Set;
+
 @RestController
 @RequestMapping(path="/users")
 public class UserController {
@@ -13,13 +17,11 @@ public class UserController {
     }
 
     @PostMapping(path="/createUser")
-    public ResponseEntity<?> createUser(@RequestParam String userName,
-                                        @RequestParam String password) {
-        System.out.println("Create user requested");
-        User userToAdd = new User();
-        userToAdd.setUserName(userName);
-        userToAdd.setPassword(password);
-        userService.saveUser(userToAdd);
+    public ResponseEntity<?> createUser(@RequestBody CreateUserDTO userDTO) {
+        System.out.println("Username: " + userDTO.getUsername());
+        System.out.println("Password: " + userDTO.getPassword());
+        System.out.println("Authorities: " + userDTO.getAuths());
+        userService.saveUser(userDTO);
         return ResponseEntity.ok("User created");
     }
 }

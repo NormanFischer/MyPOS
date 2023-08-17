@@ -3,11 +3,13 @@ import { useState } from "react";
 function AddUserPopupContent(props: {handleAddUserButtonClick: Function}) {
     
     function addNewUser() {
-        const UserToAdd = {userName: userName, password: password, authorities: Array(authorities)};
+        const userDTO = {username: userName, password: password, auths: Array.from(authorities) as string[]};
+        console.log(JSON.stringify(userDTO));
+        
         const req = {
             method: "POST",
             headers: { "Content-Type": "application/json"},
-            body: JSON.stringify(UserToAdd),
+            body: JSON.stringify(userDTO),
         };
         fetch("/users/createUser", req)
         .then(res => res.text)
@@ -29,8 +31,10 @@ function AddUserPopupContent(props: {handleAddUserButtonClick: Function}) {
     function handleAuthorityChange(e: React.ChangeEvent<HTMLInputElement>) {
         if(e.target.checked) {
             setAuthorities(authorities.add(e.target.value));
+            console.log("AUTHORITIES: " + [...authorities].join(' '))
         } else if(authorities.has(e.target.value) && authorities.delete(e.target.value)) {
             setAuthorities(authorities);
+            console.log("AUTHORITIES: " + [...authorities].join(' '))
         } 
     }
 

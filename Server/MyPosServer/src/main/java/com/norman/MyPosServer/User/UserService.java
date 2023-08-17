@@ -9,6 +9,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+import java.util.Set;
+
 @Service
 public class UserService implements UserDetailsService {
     private final UserRepository userRepo;
@@ -28,15 +31,20 @@ public class UserService implements UserDetailsService {
         return new UserSecurity(user);
     }
 
-    public void saveUser(User user) {
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
+    public void saveUser(CreateUserDTO userDTO) {
+        User user = new User();
+        user.setUserName(userDTO.getUsername());
+
+        String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
         user.setPassword(encodedPassword);
 
-        Authority authority = new Authority();
-        authority.setAuthority("USER");
-        authority.setUser(user);
-
-        user.getAuthorities().add(authority);
+        for(String authStr: userDTO.getAuths()) {
+            //TODO: Validate authStr to prevent unknown authorities from being posted
+            Authority authority = new Authority();
+            authority.setAuthority(authStr);
+            authority.setUser(user);
+            user.getAuthorities().add(authority);
+        }
 
         userRepo.save(user);
     }
