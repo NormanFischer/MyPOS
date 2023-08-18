@@ -1,8 +1,9 @@
 import './App.css';
 import  Layout  from './Layout';
 import Items from './Item/Items';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import Users from './User/Users';
+import Profile from './Profile';
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
           <Route index element={<h1>Home</h1>}/>
           <Route path="items" element={<Items />}/>
           <Route path="users" element={<Users />}/>
+          <Route path="profile" element={<Profile />}/>
         </Route>
       </Routes>
     </>

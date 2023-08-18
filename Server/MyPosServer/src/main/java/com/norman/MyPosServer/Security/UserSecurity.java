@@ -10,27 +10,27 @@ import java.util.Set;
 
 public class UserSecurity extends User implements UserDetails {
 
-    public UserSecurity() {}
     public UserSecurity(User user) {
+        super();
         this.setAuthorities(user.getAuthorities());
         this.setId(user.getId());
-        this.setUserName(user.getUserName());
+        this.setUsername(user.getUsername());
         this.setPassword(user.getPassword());
     }
 
     @Override
     public Set<Authority> getAuthorities() {
-        return this.getAuthorities();
+        return super.getAuthorities();
     }
 
     @Override
     public String getPassword() {
-        return this.getPassword();
+        return super.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return this.getUsername();
+        return super.getUsername();
     }
 
     @Override

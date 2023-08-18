@@ -2,6 +2,9 @@ package com.norman.MyPosServer.User;
 
 import com.norman.MyPosServer.Security.Authority;
 import com.norman.MyPosServer.Security.UserSecurity;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,13 +12,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
-import java.util.Set;
 
 @Service
 public class UserService implements UserDetailsService {
     private final UserRepository userRepo;
     private final PasswordEncoder passwordEncoder;
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(this);
+        authenticationProvider.setPasswordEncoder(this.passwordEncoder);
+        return authenticationProvider;
+    }
+
     @Autowired
     public UserService(UserRepository userRepo, PasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
@@ -28,12 +38,13 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
-        return new UserSecurity(user);
+        UserSecurity toRet = new UserSecurity(user);
+        return toRet;
     }
 
     public void saveUser(CreateUserDTO userDTO) {
         User user = new User();
-        user.setUserName(userDTO.getUsername());
+        user.setUsername(userDTO.getUsername());
 
         String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
         user.setPassword(encodedPassword);
