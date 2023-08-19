@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
     std::string username="testUser";
     std::string password="password";
     client.login(username, password);
+    client.fetch("/items/getItemBySku/test1", HttpClient::GET);
 
     QApplication a(argc, argv);
     MainWindow mainWindow(&client);

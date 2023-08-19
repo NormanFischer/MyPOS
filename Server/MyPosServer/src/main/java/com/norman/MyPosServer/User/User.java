@@ -41,7 +41,6 @@ public class User {
         this.password = password;
     }
 
-
     public Set<Authority> getAuthorities() {
         return this.authorities;
     }
