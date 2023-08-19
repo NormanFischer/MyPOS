@@ -13,11 +13,15 @@ class HttpClient
 private:
     CURL* curl;
     static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userptr);
+    std::string url;
 public:
-    HttpClient();
+    enum HTTP_METHOD {GET, POST};
+    HttpClient(std::string url);
     void create_curl_handle();
     void cleanup_curl();
-    HttpResponse fetch(std::string &url);
+    std::string login(std::string username, std::string password);
+    HttpResponse fetch(const std::string &endpoint, HTTP_METHOD method, std::string jsonBody="");
+    static size_t header_callback(char *buffer, size_t size, size_t nitems, void *userdata);
     ~HttpClient();
 };
 

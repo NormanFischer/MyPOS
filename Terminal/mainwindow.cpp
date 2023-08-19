@@ -49,9 +49,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::handleEnterSku() {
     std::string skuToReq = skuEntry->text().toStdString();
-    std::string url = "http://localhost:8080/items/getItemBySku/" + skuToReq;
+    std::string url = "/items/getItemBySku/" + skuToReq;
 
-    HttpResponse fetchResponse = client->fetch(url);
+    HttpResponse fetchResponse = client->fetch(url, HttpClient::GET);
     std::string jsonStr = fetchResponse.body;
 
     json j = json::parse(jsonStr);
