@@ -1,5 +1,6 @@
 package com.norman.MyPosServer.User;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
@@ -17,10 +18,18 @@ public class UserController {
 
     @PostMapping(path="/createUser")
     public ResponseEntity<?> createUser(@RequestBody CreateUserDTO userDTO) {
-        System.out.println("Username: " + userDTO.getUsername());
-        System.out.println("Password: " + userDTO.getPassword());
-        System.out.println("Authorities: " + userDTO.getAuths());
         userService.saveUser(userDTO);
         return ResponseEntity.ok("User created");
+    }
+
+    @GetMapping(path="/getUserProfile")
+    public String getUserProfileDTO(Authentication authentication) {
+        if(authentication != null && authentication.isAuthenticated()) {
+            System.out.println(authentication.toString());
+            User authenticatedUser = (User) authentication.getPrincipal();
+            return "User connected: " + authenticatedUser.getUsername();
+        } else {
+            return "Could not get authentication from user";
+        }
     }
 }

@@ -32,6 +32,11 @@ set(PROJECT_SOURCES
         core/user.h
         core/HttpClient.h
         core/HttpClient.cpp
+        transactiontablewidget.h
+        transactiontablewidget.cpp
+        item_table_row.h
+        skuentrycontroller.cpp
+        skuentrycontroller.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

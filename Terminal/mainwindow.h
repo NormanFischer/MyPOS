@@ -8,6 +8,8 @@
 #include <QTableWidget>
 #include <QLineEdit>
 #include <core/HttpClient.h>
+#include <transactiontablewidget.h>
+#include <skuentrycontroller.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,18 +20,19 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(HttpClient *client, QWidget *parent = nullptr);
+    MainWindow(HttpClient *httpClient, QWidget *parent = nullptr);
     ~MainWindow();
 private slots:
     void handleEnterSku();
 private:
     QVBoxLayout *layout;
-    QPushButton *enterSku;
-    QTableWidget *transactionTable;
-    QLineEdit *skuEntry;
+    TransactionTableWidget *transactionTableWidget;
+    SkuEntryController *skuEntryController;
     Ui::MainWindow *ui;
-    int transactionRow;
-    HttpClient *client;
+    HttpClient *httpClient;
+    void initializeConnects();
+    void initializeChildren();
+    void initializeAndSetupLayout();
 };
 
 #endif // MAINWINDOW_H
