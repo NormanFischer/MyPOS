@@ -29,7 +29,6 @@ void TransactionTableWidget::populateTableRow(ItemTableRow itemTableRow)
 }
 
 //Slots
-
 void TransactionTableWidget::onItemReceived(ItemTableRow itemTableRow)
 {
     this->populateTableRow(itemTableRow);

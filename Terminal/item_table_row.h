@@ -1,7 +1,8 @@
 #ifndef ITEMTABLEROW_H
 #define ITEMTABLEROW_H
 
-struct ItemTableRow {
+struct ItemTableRow
+{
     std::string itemSKU;
     std::string itemName;
     int quantity;

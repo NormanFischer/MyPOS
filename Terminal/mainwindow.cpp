@@ -7,6 +7,11 @@
 
 using json = nlohmann::json;
 
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
 MainWindow::MainWindow(HttpClient *httpClient, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow), httpClient(httpClient)
@@ -25,6 +30,8 @@ MainWindow::MainWindow(HttpClient *httpClient, QWidget *parent)
 void MainWindow::initializeConnects()
 {
     connect(skuEntryController, &SkuEntryController::itemTableRowCreated, transactionTableWidget, &TransactionTableWidget::onItemReceived);
+    connect(skuEntryController, &SkuEntryController::itemTableRowCreated, this, &MainWindow::handleItemAdded);
+    connect(skuEntryController, &SkuEntryController::completeTransactionRequested, this, &MainWindow::processRequestedTransaction);
 }
 
 void MainWindow::initializeChildren()
@@ -40,13 +47,18 @@ void MainWindow::initializeAndSetupLayout()
     layout->addWidget(skuEntryController);
 }
 
-MainWindow::~MainWindow()
+void MainWindow::handleItemAdded(ItemTableRow itemTableRow)
 {
-    delete ui;
+    std::cout << "Handling item added" << std::endl;
+    std::cout << itemTableRow.itemSKU << std::endl;
+    std::cout << std::to_string(itemTableRow.quantity) << std::endl;
+    currentTransaction.add_item(Item(itemTableRow.itemSKU, itemTableRow.quantity));
 }
 
-void MainWindow::handleEnterSku()
+void MainWindow::processRequestedTransaction()
 {
-
+    currentTransaction.toJsonStr();
 }
+
+
 

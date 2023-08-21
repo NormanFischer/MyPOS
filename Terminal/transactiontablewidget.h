@@ -17,7 +17,6 @@ public:
 private:
     QTableWidget *transactionTable;
     QHBoxLayout *layout;
-    int transactionRow;
     void populateTableRow(ItemTableRow itemTableRow);
 public slots:
     void onItemReceived(ItemTableRow itemTableRow);

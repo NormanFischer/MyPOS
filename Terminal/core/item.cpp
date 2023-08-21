@@ -1,23 +1,23 @@
-#include "item.h"
+#include <core/item.h>
 
-Item::Item(std::string itemName, long int price) {
-    this->itemName = itemName;
-    this->price = price;
+Item::Item(const std::string sku, int quantity) {
+    this->sku = sku;
+    this->quantity = quantity;
 }
 
-std::string Item::getItemName() {
-    return this->itemName;
+std::string Item::getSku() {
+    return sku;
 }
 
-long int Item::getPrice() {
-    return this->price;
+int Item::getQuantity() {
+    return quantity;
 }
 
 bool Item::operator==(Item& otherItem) {
-    return this->getItemName() == otherItem.getItemName() && this->getPrice() == otherItem.getPrice();
+    return getSku() == otherItem.getSku() && getQuantity() == otherItem.getQuantity();
 }
 
 bool Item::operator!=(Item& otherItem) {
-    return this->getItemName() != otherItem.getItemName() || this->getPrice() != otherItem.getPrice();
+    return getSku() != otherItem.getSku() || getQuantity() != otherItem.getQuantity();
 }
 

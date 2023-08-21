@@ -8,6 +8,7 @@
 #include <QTableWidget>
 #include <QLineEdit>
 #include <core/HttpClient.h>
+#include <core/transaction.h>
 #include <transactiontablewidget.h>
 #include <skuentrycontroller.h>
 
@@ -23,13 +24,15 @@ public:
     MainWindow(HttpClient *httpClient, QWidget *parent = nullptr);
     ~MainWindow();
 private slots:
-    void handleEnterSku();
+    void handleItemAdded(ItemTableRow itemTableRow);
+    void processRequestedTransaction();
 private:
     QVBoxLayout *layout;
     TransactionTableWidget *transactionTableWidget;
     SkuEntryController *skuEntryController;
     Ui::MainWindow *ui;
     HttpClient *httpClient;
+    Transaction currentTransaction;
     void initializeConnects();
     void initializeChildren();
     void initializeAndSetupLayout();

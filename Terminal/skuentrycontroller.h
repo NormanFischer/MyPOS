@@ -7,6 +7,7 @@
 #include <QHBoxLayout>
 #include <item_table_row.h>
 #include <core/HttpClient.h>
+#include <vector>
 
 QT_BEGIN_NAMESPACE
 QT_END_NAMESPACE
@@ -26,8 +27,10 @@ private:
     HttpClient *httpClient;
 public slots:
     void handleEnterSkuButtonReleased();
+    void hanldeCompleteTransactionButtonReleased();
 signals:
     void itemTableRowCreated(ItemTableRow itemTableRow);
+    void completeTransactionRequested();
 };
 
 #endif // SKUENTRYCONTROLLER_H

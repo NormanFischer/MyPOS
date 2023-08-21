@@ -5,14 +5,15 @@
 #define ITEM_H
     class Item {
         private:
-            std::string itemName;
-            long int price;
+            std::string sku;
+            int quantity;
             
         public:
-            Item(std::string itemName, long int price);
-            std::string getItemName();
-            long int getPrice();
+            Item(std::string sku, int quantity);
+            std::string getSku();
+            int getQuantity();
             bool operator==(Item& otherItem);
             bool operator!=(Item& otherItem);
+
     };
 #endif

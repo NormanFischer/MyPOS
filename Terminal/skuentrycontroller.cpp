@@ -10,6 +10,7 @@ SkuEntryController::SkuEntryController(HttpClient *httpClient, QWidget *parent)
     :QWidget(parent), httpClient(httpClient)
 {
     enterSkuButton = new QPushButton("Enter sku", this);
+    completeTransaction = new QPushButton("Complete Transaction", this);
     skuEntry = new QLineEdit(this);
     quantityEntry = new QLineEdit(this);
     layout = new QHBoxLayout(this);
@@ -21,9 +22,11 @@ SkuEntryController::SkuEntryController(HttpClient *httpClient, QWidget *parent)
     layout->addWidget(skuEntry);
     layout->addWidget(quantityEntry);
     layout->addWidget(enterSkuButton);
+    layout->addWidget(completeTransaction);
 
     connect(enterSkuButton, &QPushButton::released, this, &SkuEntryController::handleEnterSkuButtonReleased);
     connect(skuEntry, &QLineEdit::returnPressed, this, &SkuEntryController::handleEnterSkuButtonReleased);
+    connect(completeTransaction, &QPushButton::released, this, &SkuEntryController::hanldeCompleteTransactionButtonReleased);
 }
 
 void SkuEntryController::handleEnterSkuButtonReleased()
@@ -38,8 +41,12 @@ void SkuEntryController::handleEnterSkuButtonReleased()
     json j = json::parse(jsonStr);
     std::string itemSku = j["sku"];
     std::string itemName = j["itemName"];
-    int quantity = j["quantity"];
     int cost = j["cost"];
 
-    emit itemTableRowCreated(ItemTableRow {itemSku, itemName, quantity, cost});
+    emit itemTableRowCreated(ItemTableRow {itemSku, itemName, 1, cost});
+}
+
+void SkuEntryController::hanldeCompleteTransactionButtonReleased()
+{
+    emit completeTransactionRequested();
 }

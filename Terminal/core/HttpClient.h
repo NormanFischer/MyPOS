@@ -12,7 +12,7 @@ class HttpClient
 {
 private:
     CURL* curl;
-    static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userptr);
+    static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void* userptr);
     static size_t header_callback(char *buffer, size_t size, size_t nitems, void *userdata);
     std::string url;
     std::string session_cookie;
