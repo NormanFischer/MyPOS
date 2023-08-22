@@ -1,26 +1,25 @@
 #include <iostream>
-#include "transaction.h"
+#include "tojson.h"
 
-Transaction::Transaction() {
+Transaction::Transaction()
+{
     items = {};
 }
 
-std::vector<Item>& Transaction::getItems() {
+std::vector<Item>& Transaction::getItems()
+{
     return items;
 }
 
-void Transaction::add_item(Item i) {
+void Transaction::add_item(Item i)
+{
     getItems().push_back(i);
 }
 
-std::string Transaction::toJsonStr() {
-    std::string jsonStr = "{[";
-    for (Item &item : items) {
-        json itemData;
-        itemData["sku"] = item.getSku();
-        itemData["quantity"] = item.getQuantity();
-        jsonStr.append(itemData.dump());
-    }
-    std::cout << "Json dump: " << jsonStr << "}" << std::endl;
-    return jsonStr.append("]}");
+std::string Transaction::toJsonStr()
+{
+    std::string jsonStr;
+    jsonStr.append(ToJson::toPostTransactionDTO(*this).dump());
+    std::cout << "Json dump: " << jsonStr << std::endl;
+    return jsonStr;
 }

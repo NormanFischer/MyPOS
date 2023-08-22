@@ -1,9 +1,11 @@
 package com.norman.MyPosServer.Transaction;
 
-import com.norman.MyPosServer.Security.Authority;
+import com.norman.MyPosServer.User.User;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -13,9 +15,18 @@ public class Transaction {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private int id;
 
-    private int userAuthor;
+    @ManyToOne
+    private User user;
 
     @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy="transaction")
-    private Set<TransactionItem> transactionItems = new HashSet<>();
+    private List<TransactionItem> transactionItems = new ArrayList<>();
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setTransactionItems(List<TransactionItem> transactionItems) {
+        this.transactionItems = transactionItems;
+    }
 
 }

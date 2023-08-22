@@ -5,11 +5,11 @@ Item::Item(const std::string sku, int quantity) {
     this->quantity = quantity;
 }
 
-std::string Item::getSku() {
+const std::string Item::getSku() {
     return sku;
 }
 
-int Item::getQuantity() {
+const int Item::getQuantity() {
     return quantity;
 }
 

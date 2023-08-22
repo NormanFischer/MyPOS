@@ -2,7 +2,6 @@ package com.norman.MyPosServer.User;
 
 import com.norman.MyPosServer.Security.Authority;
 import jakarta.persistence.*;
-
 import java.util.HashSet;
 import java.util.Set;
 

@@ -17,6 +17,7 @@ MainWindow::MainWindow(HttpClient *httpClient, QWidget *parent)
     , ui(new Ui::MainWindow), httpClient(httpClient)
 {
     QWidget *main = new QWidget(this);
+
     setCentralWidget(main);
     initializeChildren();
     initializeConnects();
@@ -57,7 +58,7 @@ void MainWindow::handleItemAdded(ItemTableRow itemTableRow)
 
 void MainWindow::processRequestedTransaction()
 {
-    currentTransaction.toJsonStr();
+    std::string transactionBody = currentTransaction.toJsonStr();
 }
 
 

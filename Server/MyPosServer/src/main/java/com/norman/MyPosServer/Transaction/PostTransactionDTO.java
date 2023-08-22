@@ -3,6 +3,9 @@ package com.norman.MyPosServer.Transaction;
 import java.util.List;
 
 public class PostTransactionDTO {
-    private int userID;
-    private List<PostTransactionItemDTO> postTransactionItemDTOs;
+    private List<TransactionItem> items;
+
+    public List<TransactionItem> getItems() {
+        return this.items;
+    }
 }

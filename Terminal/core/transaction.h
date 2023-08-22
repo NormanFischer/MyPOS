@@ -9,6 +9,7 @@ using json = nlohmann::json;
 #define TRANSACTION
     class Transaction {
         private:
+            int userId;
             std::vector<Item> items;
         public:
             Transaction();
@@ -16,6 +17,7 @@ using json = nlohmann::json;
             void add_item(Item i);
             void delete_item();
             long int calculateTotal();
+            int getUserId;
             std::string toJsonStr();
     };
 #endif

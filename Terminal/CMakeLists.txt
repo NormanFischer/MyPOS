@@ -32,6 +32,9 @@ set(PROJECT_SOURCES
         core/user.h
         core/HttpClient.h
         core/HttpClient.cpp
+        core/tojson.h
+        core/tojson.cpp
+
         transactiontablewidget.h
         transactiontablewidget.cpp
         item_table_row.h

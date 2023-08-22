@@ -10,8 +10,8 @@
             
         public:
             Item(std::string sku, int quantity);
-            std::string getSku();
-            int getQuantity();
+            const std::string getSku();
+            const int getQuantity();
             bool operator==(Item& otherItem);
             bool operator!=(Item& otherItem);
 
