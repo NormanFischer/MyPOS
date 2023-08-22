@@ -52,37 +52,41 @@ std::string HttpClient::login(const std::string username, const std::string pass
 HttpResponse HttpClient::fetch(const std::string &endpoint, HTTP_METHOD method, std::string jsonBody) {
     std::string header_data;
     std::string write_data;
+
     curl_easy_setopt(curl, CURLOPT_URL, (url + endpoint).c_str());
     curl_easy_setopt(curl, CURLOPT_COOKIE, (this->session_cookie).c_str());
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &write_data);
     curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, header_callback);
     curl_easy_setopt(curl, CURLOPT_HEADERDATA, &header_data);
+
     switch(method) {
         case GET:
             curl_easy_setopt(curl, CURLOPT_POST, 0);
             break;
         case POST:
             curl_easy_setopt(curl, CURLOPT_POST, 1);
-            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonBody);
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonBody.c_str());
             break;
         default:
-            std::cout << "Error: Invalid HTTP Method" << std::endl;
+            std::cerr << "Error: Invalid HTTP Method" << std::endl;
             return HttpResponse {-1, "INVALID_METHOD"};
     }
 
     long statusCode;
 
+    //Temp headers
+    struct curl_slist *headers = NULL;
+    headers = curl_slist_append(headers, "Content-Type: application/json");
+    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+
     CURLcode res = curl_easy_perform(curl);
+    curl_slist_free_all(headers);
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &statusCode);
     if (res != CURLE_OK) {
         std::cerr << "Failed to perform request: " << curl_easy_strerror(res) << std::endl;
         return HttpResponse {-1, "CURL_FAIL"};
     } else {
-        std::cout << "Head: " << std::endl;
-        std::cout << header_data << std::endl;
-        std::cout << "Body:" << std::endl;
-        std::cout << write_data << std::endl;
         return HttpResponse {statusCode, write_data};
     }
 }

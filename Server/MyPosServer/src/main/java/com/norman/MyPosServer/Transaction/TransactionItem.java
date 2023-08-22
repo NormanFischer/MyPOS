@@ -1,5 +1,6 @@
 package com.norman.MyPosServer.Transaction;
 
+import com.norman.MyPosServer.Item.Item;
 import jakarta.persistence.*;
 
 enum TransactionDirection {CUSTOMER_PURCHASE, CUSTOMER_REFUND}
@@ -13,7 +14,20 @@ public class TransactionItem {
     @ManyToOne
     private Transaction transaction;
 
-    private int itemId;
+    @ManyToOne
+    private Item item;
     private int quantity;
     private TransactionDirection direction;
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setTransactionDirection(TransactionDirection direction) {
+        this.direction = direction;
+    }
 }

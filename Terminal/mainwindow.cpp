@@ -59,6 +59,9 @@ void MainWindow::handleItemAdded(ItemTableRow itemTableRow)
 void MainWindow::processRequestedTransaction()
 {
     std::string transactionBody = currentTransaction.toJsonStr();
+    std::string url = "/transaction/postTransaction";
+    HttpResponse response = httpClient->fetch(url, HttpClient::POST, transactionBody);
+    std::cout << response.body << std::endl;
 }
 
 

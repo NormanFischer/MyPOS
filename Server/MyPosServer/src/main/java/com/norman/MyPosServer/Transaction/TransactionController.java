@@ -2,12 +2,11 @@ package com.norman.MyPosServer.Transaction;
 
 import com.norman.MyPosServer.User.User;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@RequestMapping(path="transaction/")
+@RestController
+@RequestMapping(path="/transaction")
 public class TransactionController {
     private final TransactionService transactionService;
 
@@ -20,8 +19,8 @@ public class TransactionController {
                                   Authentication authentication) {
         if(authentication != null && authentication.isAuthenticated()) {
             User authenticatedUser = (User) authentication.getPrincipal();
-
         }
-        return "Unimplemented";
+        return "User authentication failed";
     }
+
 }
