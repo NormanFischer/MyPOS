@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QPushButton>
 #include <item_table_row.h>
 #include <core/HttpClient.h>
 
@@ -23,7 +24,8 @@ private:
     HttpClient *httpClient;
     QHBoxLayout *layout;
     QLabel *userLabel;
-
+    QLabel *loginStatus;
+    QPushButton *logInLogOut;
 };
 
 #endif // HEADERCONTAINERWIDGET_H

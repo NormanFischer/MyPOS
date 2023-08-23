@@ -11,7 +11,9 @@ SkuEntryController::SkuEntryController(HttpClient *httpClient, QWidget *parent)
 {
     enterSkuButton = new QPushButton("Enter sku", this);
     completeTransaction = new QPushButton("Complete Transaction", this);
+    skuEntryLabel = new QLabel("Enter SKU:", this);
     skuEntry = new QLineEdit(this);
+    quantityEntryLabel = new QLabel("Enter Quantity:", this);
     quantityEntry = new QLineEdit(this);
     layout = new QHBoxLayout(this);
 
@@ -19,7 +21,9 @@ SkuEntryController::SkuEntryController(HttpClient *httpClient, QWidget *parent)
     validQuantity->setBottom(1);
     quantityEntry->setValidator(validQuantity);
 
+    layout->addWidget(skuEntryLabel);
     layout->addWidget(skuEntry);
+    layout->addWidget(quantityEntryLabel);
     layout->addWidget(quantityEntry);
     layout->addWidget(enterSkuButton);
     layout->addWidget(completeTransaction);

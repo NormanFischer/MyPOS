@@ -22,9 +22,7 @@ find_package(nlohmann_json 3.2.0 REQUIRED)
 
 set(PROJECT_SOURCES
         main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
+
         core/item.cpp
         core/item.h
         core/transaction.cpp
@@ -35,13 +33,19 @@ set(PROJECT_SOURCES
         core/tojson.h
         core/tojson.cpp
 
-        headercontainerwidget.h
-        headercontainerwidget.cpp
-        transactiontablewidget.h
-        transactiontablewidget.cpp
-        item_table_row.h
-        skuentrycontroller.cpp
-        skuentrycontroller.h
+        widgets/mainwindow.h
+        widgets/mainwindow.cpp
+        widgets/loginwindow.h
+        widgets/loginwindow.cpp
+        widgets/headercontainerwidget.h
+        widgets/headercontainerwidget.cpp
+        widgets/transactiontablewidget.h
+        widgets/transactiontablewidget.cpp
+        widgets/item_table_row.h
+        widgets/skuentrycontroller.cpp
+        widgets/skuentrycontroller.h
+
+        mainwindow.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

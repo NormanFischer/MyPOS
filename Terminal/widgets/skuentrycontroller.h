@@ -2,6 +2,7 @@
 #define SKUENTRYCONTROLLER_H
 
 #include <QWidget>
+#include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QHBoxLayout>
@@ -21,7 +22,9 @@ public:
 private:
     QPushButton *enterSkuButton;
     QPushButton *completeTransaction;
+    QLabel *skuEntryLabel;
     QLineEdit *skuEntry;
+    QLabel *quantityEntryLabel;
     QLineEdit *quantityEntry;
     QHBoxLayout *layout;
     HttpClient *httpClient;

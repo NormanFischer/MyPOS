@@ -4,8 +4,12 @@ HeaderContainerWidget::HeaderContainerWidget(HttpClient *httpClient, QWidget *pa
     : QWidget(parent), httpClient(httpClient)
 {
     userLabel = new QLabel("Logged out");
+    loginStatus = new QLabel("Implement me!");
+    logInLogOut = new QPushButton("Log in / Log out");
     layout = new QHBoxLayout();
     layout->addWidget(userLabel);
+    layout->addWidget(loginStatus);
+    layout->addWidget(logInLogOut);
     setLayout(layout);
 }
 

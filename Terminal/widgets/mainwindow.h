@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include <QTableWidget>
 #include <QLineEdit>
+#include <loginwindow.h>
 #include <core/HttpClient.h>
 #include <core/tojson.h>
 #include <transactiontablewidget.h>
@@ -24,12 +25,14 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(HttpClient *httpClient, QWidget *parent = nullptr);
     ~MainWindow();
+    void toggleLoginWindow();
 signals:
     void gotNewUserName(const std::string userName);
 private slots:
     void handleItemAdded(ItemTableRow itemTableRow);
     void processRequestedTransaction();
 private:
+    LoginWindow *loginWindow;
     QVBoxLayout *layout;
     HeaderContainerWidget *headerContainerWidget;
     TransactionTableWidget *transactionTableWidget;

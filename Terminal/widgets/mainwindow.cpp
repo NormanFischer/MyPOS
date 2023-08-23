@@ -3,6 +3,8 @@
 #include "core/item.h"
 #include <iostream>
 #include <curl/curl.h>
+#include "QScreen"
+#include "QDesktopWidget"
 
 MainWindow::~MainWindow()
 {
@@ -23,8 +25,22 @@ MainWindow::MainWindow(HttpClient *httpClient, QWidget *parent)
     emit gotNewUserName(httpClient->getUserName());
 
     main->setLayout(layout);
+
+
+
     //ui->setupUi(this);
 }
+
+void MainWindow::toggleLoginWindow()
+{
+    //Prompt user login...
+    if (loginWindow->isHidden()) {
+        loginWindow->show();
+    } else {
+        loginWindow->hide();
+    }
+}
+
 
 //Startup helpers
 
@@ -34,6 +50,7 @@ void MainWindow::initializeConnects()
     connect(skuEntryController, &SkuEntryController::itemTableRowCreated, this, &MainWindow::handleItemAdded);
     connect(skuEntryController, &SkuEntryController::completeTransactionRequested, this, &MainWindow::processRequestedTransaction);
     connect(this, &MainWindow::gotNewUserName, headerContainerWidget, &HeaderContainerWidget::handleUserNameChangeRequest);
+    connect(loginWindow, &LoginWindow::handleLoginButtonReleased, this, &MainWindow::handleLoginRequest);
 }
 
 void MainWindow::initializeChildren()
@@ -41,6 +58,7 @@ void MainWindow::initializeChildren()
     headerContainerWidget = new HeaderContainerWidget(httpClient, this);
     transactionTableWidget = new TransactionTableWidget(this);
     skuEntryController = new SkuEntryController(httpClient, this);
+    loginWindow = new LoginWindow(this);
 }
 
 void MainWindow::initializeAndSetupLayout()
@@ -49,6 +67,12 @@ void MainWindow::initializeAndSetupLayout()
     layout->addWidget(headerContainerWidget);
     layout->addWidget(transactionTableWidget);
     layout->addWidget(skuEntryController);
+}
+
+//Signals
+void MainWindow::handleLoginRequest(const std::string &userName, const std::string &password)
+{
+
 }
 
 //Slots
