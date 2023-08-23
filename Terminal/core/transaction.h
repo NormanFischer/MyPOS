@@ -1,9 +1,6 @@
 #include <iostream>
 #include <vector>
 #include "item.h"
-#include <nlohmann/json.hpp>
-
-using json = nlohmann::json;
 
 #ifndef TRANSACTION_H
 #define TRANSACTION
@@ -18,6 +15,5 @@ using json = nlohmann::json;
             void delete_item();
             long int calculateTotal();
             int getUserId;
-            std::string toJsonStr();
     };
 #endif

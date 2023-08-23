@@ -35,6 +35,8 @@ set(PROJECT_SOURCES
         core/tojson.h
         core/tojson.cpp
 
+        headercontainerwidget.h
+        headercontainerwidget.cpp
         transactiontablewidget.h
         transactiontablewidget.cpp
         item_table_row.h

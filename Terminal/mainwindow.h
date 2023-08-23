@@ -8,9 +8,10 @@
 #include <QTableWidget>
 #include <QLineEdit>
 #include <core/HttpClient.h>
-#include <core/transaction.h>
+#include <core/tojson.h>
 #include <transactiontablewidget.h>
 #include <skuentrycontroller.h>
+#include <headercontainerwidget.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,11 +24,14 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(HttpClient *httpClient, QWidget *parent = nullptr);
     ~MainWindow();
+signals:
+    void gotNewUserName(const std::string userName);
 private slots:
     void handleItemAdded(ItemTableRow itemTableRow);
     void processRequestedTransaction();
 private:
     QVBoxLayout *layout;
+    HeaderContainerWidget *headerContainerWidget;
     TransactionTableWidget *transactionTableWidget;
     SkuEntryController *skuEntryController;
     Ui::MainWindow *ui;

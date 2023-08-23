@@ -52,4 +52,8 @@ public class UserSecurity extends User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public String toString() {
+        return this.getUsername();
+    }
 }
