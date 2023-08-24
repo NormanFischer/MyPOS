@@ -31,6 +31,8 @@ public class TransactionItem {
         this.direction = direction;
     }
 
+    public void setTransaction(Transaction transaction) { this.transaction = transaction; }
+
     public String toString() {
         return item.getItemName();
     }

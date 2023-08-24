@@ -8,6 +8,7 @@ function Layout() {
                     <li><Link to="/">Home</Link></li>
                     <li><Link to="/items">Items</Link></li>
                     <li><Link to="/users">Users</Link></li>
+                    <li><Link to="/transactions">Transactions</Link></li>
                     <li><Link to="/profile">Profile</Link></li>   
                 </ul>
             </div>

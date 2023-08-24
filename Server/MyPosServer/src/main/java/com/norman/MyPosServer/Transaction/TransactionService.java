@@ -64,13 +64,14 @@ public class TransactionService {
             transactionItem.setQuantity(transactionitemDTO.getQuantity());
             //TODO: Change depending on transaction direction request
             transactionItem.setTransactionDirection(TransactionDirection.CUSTOMER_PURCHASE);
+            transactionItem.setTransaction(toAdd);
             transactionItems.add(transactionItem);
         }
 
         toAdd.setTransactionItems(transactionItems);
         toAdd.setUser(transactionUser);
 
-        //transactionRepository.save(toAdd);
+        transactionRepository.save(toAdd);
         System.out.println("Transaction completed");
         System.out.println(toAdd.toString());
     }
