@@ -14,6 +14,5 @@
             const int getQuantity();
             bool operator==(Item& otherItem);
             bool operator!=(Item& otherItem);
-
     };
 #endif

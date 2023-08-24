@@ -29,6 +29,7 @@ public:
 signals:
     void gotNewUserName(const std::string userName);
 private slots:
+    void handleLoginRequest(const std::string &userName, const std::string &password);
     void handleItemAdded(ItemTableRow itemTableRow);
     void processRequestedTransaction();
 private:

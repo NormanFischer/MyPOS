@@ -26,7 +26,7 @@ public:
     HttpClient(std::string url);
     void create_curl_handle();
     void cleanup_curl();
-    std::string login(std::string username, std::string password);
+    const bool login(const std::string &username, const std::string &password);
     const std::string getUserName();
     HttpResponse fetch(const std::string &endpoint, HTTP_METHOD method, json jsonBody=nullptr);
     ~HttpClient();

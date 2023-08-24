@@ -3,7 +3,7 @@ package com.norman.MyPosServer.Item;
 import java.util.List;
 import java.util.Optional;
 
-import com.norman.MyPosServer.InvalidItemQueryTypeException;
+import com.norman.MyPosServer.Exceptions.InvalidItemQueryTypeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

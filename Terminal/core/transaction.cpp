@@ -4,6 +4,7 @@
 Transaction::Transaction()
 {
     items = {};
+    total = 0;
 }
 
 std::vector<Item>& Transaction::getItems()
@@ -14,4 +15,14 @@ std::vector<Item>& Transaction::getItems()
 void Transaction::add_item(Item i)
 {
     getItems().push_back(i);
+}
+
+void Transaction::setTotal(int newTotal)
+{
+    total = newTotal;
+}
+
+int Transaction::getTotal()
+{
+    return total;
 }

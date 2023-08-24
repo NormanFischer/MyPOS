@@ -19,14 +19,15 @@ void HttpClient::create_curl_handle() {
 }
 
 //How we recieve session id
-std::string HttpClient::login(const std::string username, const std::string password) {
+const bool HttpClient::login(const std::string &username, const std::string &password) {
     std::string header_data;
     std::string write_data;
 
+    std::string postFields = "username=" + username + "&" + "password=" + password;
     curl_easy_setopt(curl, CURLOPT_URL, (url + "/login").c_str());
     curl_easy_setopt(curl, CURLOPT_POST, 1);
     //TODO: Change this
-    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "username=testUser&password=password");
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postFields.c_str());
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &write_data);
     curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, header_callback);
@@ -38,7 +39,7 @@ std::string HttpClient::login(const std::string username, const std::string pass
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &statusCode);
     if (res != CURLE_OK) {
         std::cerr << "Failed to perform request: " << curl_easy_strerror(res) << std::endl;
-        return "";
+        return false;
     } else {
         //Keep this username for display in the main application
         userName = username;
@@ -55,7 +56,7 @@ std::string HttpClient::login(const std::string username, const std::string pass
         }
         //TODO: Messy af lol
         this->session_cookie = header_data.substr(start_pos + 1, end_pos - start_pos);
-        return header_data.substr(start_pos + 1, end_pos - start_pos);
+        return true;
     }
 }
 

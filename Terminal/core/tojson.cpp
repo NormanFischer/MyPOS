@@ -25,5 +25,6 @@ json ToJson::toPostTransactionDTO(Transaction &transaction)
 {
     json transactionData;
     transactionData["items"] = ToJson::fromItemVector(transaction.getItems());
+    transactionData["total"] = transaction.getTotal();
     return transactionData;
 }

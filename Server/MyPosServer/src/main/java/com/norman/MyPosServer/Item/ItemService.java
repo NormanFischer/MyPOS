@@ -1,6 +1,6 @@
 package com.norman.MyPosServer.Item;
 
-import com.norman.MyPosServer.InvalidItemQueryTypeException;
+import com.norman.MyPosServer.Exceptions.InvalidItemQueryTypeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

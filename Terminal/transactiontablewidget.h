@@ -3,7 +3,8 @@
 
 #include <QWidget>
 #include <QTableWidget>
-#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QLabel>
 #include <item_table_row.h>
 
 QT_BEGIN_NAMESPACE
@@ -14,9 +15,11 @@ class TransactionTableWidget : public QWidget
     Q_OBJECT
 public:
     TransactionTableWidget(QWidget *parent);
+    void setTotal(QString &newTotal);
 private:
     QTableWidget *transactionTable;
-    QHBoxLayout *layout;
+    QLabel *total;
+    QVBoxLayout *layout;
     void populateTableRow(ItemTableRow itemTableRow);
 public slots:
     void onItemReceived(ItemTableRow itemTableRow);

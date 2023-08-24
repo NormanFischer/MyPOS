@@ -47,7 +47,14 @@ void SkuEntryController::handleEnterSkuButtonReleased()
     std::string itemName = j["itemName"];
     int cost = j["cost"];
 
-    emit itemTableRowCreated(ItemTableRow {itemSku, itemName, 1, cost});
+    int quantity = quantityEntry->text().toInt();
+    //Will not accept zero or less as a valid quantity
+    if (quantity <= 0)
+    {
+        quantity = 1;
+    }
+
+    emit itemTableRowCreated(ItemTableRow {itemSku, itemName, quantity, cost});
 }
 
 void SkuEntryController::hanldeCompleteTransactionButtonReleased()

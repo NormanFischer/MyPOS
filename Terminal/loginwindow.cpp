@@ -1,5 +1,6 @@
 #include "loginwindow.h"
 #include "QScreen"
+#include <iostream>
 
 LoginWindow::LoginWindow(QWidget *parent)
     : QDialog(parent)
@@ -18,11 +19,14 @@ LoginWindow::LoginWindow(QWidget *parent)
     layout->addWidget(passwordEntry);
     layout->addWidget(loginButton);
 
+    connect(loginButton, &QPushButton::released, this, &LoginWindow::handleLoginButtonReleased);
+
     setLayout(layout);
 }
 
 void LoginWindow::handleLoginButtonReleased()
 {
+    std::cout << "Login button pressed" << std::endl;
     emit userRequestedLogin(userNameEntry->text().toUtf8().constData(),
                             passwordEntry->text().toUtf8().constData());
 }

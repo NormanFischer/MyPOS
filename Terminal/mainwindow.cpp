@@ -21,12 +21,8 @@ MainWindow::MainWindow(HttpClient *httpClient, QWidget *parent)
     initializeChildren();
     initializeConnects();
     initializeAndSetupLayout();
-    //Get username
-    emit gotNewUserName(httpClient->getUserName());
 
     main->setLayout(layout);
-
-
 
     //ui->setupUi(this);
 }
@@ -35,6 +31,7 @@ void MainWindow::toggleLoginWindow()
 {
     //Prompt user login...
     if (loginWindow->isHidden()) {
+        loginWindow->setModal(true);
         loginWindow->show();
     } else {
         loginWindow->hide();
@@ -50,7 +47,7 @@ void MainWindow::initializeConnects()
     connect(skuEntryController, &SkuEntryController::itemTableRowCreated, this, &MainWindow::handleItemAdded);
     connect(skuEntryController, &SkuEntryController::completeTransactionRequested, this, &MainWindow::processRequestedTransaction);
     connect(this, &MainWindow::gotNewUserName, headerContainerWidget, &HeaderContainerWidget::handleUserNameChangeRequest);
-    connect(loginWindow, &LoginWindow::handleLoginButtonReleased, this, &MainWindow::handleLoginRequest);
+    connect(loginWindow, &LoginWindow::userRequestedLogin, this, &MainWindow::handleLoginRequest);
 }
 
 void MainWindow::initializeChildren()
@@ -72,17 +69,28 @@ void MainWindow::initializeAndSetupLayout()
 //Signals
 void MainWindow::handleLoginRequest(const std::string &userName, const std::string &password)
 {
-
+    std::cout << "Attempting to log in" << std::endl;
+    bool loggedIn = httpClient->login(userName, password);
+    //Login will redirect
+    if (loggedIn)
+    {
+        //Update display
+        emit gotNewUserName(httpClient->getUserName());
+        toggleLoginWindow();
+    } else {
+        std::cout << "Could not log in..." << std::endl;
+    }
 }
 
 //Slots
 
 void MainWindow::handleItemAdded(ItemTableRow itemTableRow)
 {
-    std::cout << "Handling item added" << std::endl;
-    std::cout << itemTableRow.itemSKU << std::endl;
-    std::cout << std::to_string(itemTableRow.quantity) << std::endl;
+    int newTotal = currentTransaction.getTotal() + (itemTableRow.costPer * itemTableRow.quantity);
     currentTransaction.add_item(Item(itemTableRow.itemSKU, itemTableRow.quantity));
+    currentTransaction.setTotal(newTotal);
+    QString newTotalStr = QString::fromStdString(std::to_string(newTotal));
+    transactionTableWidget->setTotal(newTotalStr);
 }
 
 void MainWindow::processRequestedTransaction()

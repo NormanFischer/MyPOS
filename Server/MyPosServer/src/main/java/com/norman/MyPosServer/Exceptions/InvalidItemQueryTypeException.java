@@ -1,4 +1,4 @@
-package com.norman.MyPosServer;
+package com.norman.MyPosServer.Exceptions;
 
 public class InvalidItemQueryTypeException extends RuntimeException {
     public InvalidItemQueryTypeException(String msg) {
