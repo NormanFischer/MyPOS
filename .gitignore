@@ -1,3 +1,4 @@
 build-MyPOS-Desktop-Debug/
 .vscode/
+.idea/
 Terminal/CMakeLists.txt.user
