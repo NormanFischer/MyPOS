@@ -30,6 +30,7 @@ function DatabaseExplorer<T extends Record<string, any>>(props: { dataType: new 
         fetch(url)
         .then(res => res.json())
         .then(json => {
+            console.log(json);
             setObjs(json);
         });
     }

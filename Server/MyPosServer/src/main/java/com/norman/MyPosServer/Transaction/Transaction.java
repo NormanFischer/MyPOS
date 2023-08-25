@@ -4,6 +4,7 @@ import com.norman.MyPosServer.Item.Item;
 import com.norman.MyPosServer.User.User;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,12 +20,22 @@ public class Transaction {
     @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy="transaction")
     private List<TransactionItem> transactionItems = new ArrayList<>();
 
+    private LocalDateTime dateTime;
+
+    public User getUser() { return this.user; }
+
     public void setUser(User user) {
         this.user = user;
     }
 
-    public void setTransactionItems(ArrayList<TransactionItem> transactionItems) {
-        this.transactionItems = transactionItems;
+    public List<TransactionItem> getTransactionItems() { return this.transactionItems; }
+
+    public void setTransactionItems(ArrayList<TransactionItem> transactionItems) { this.transactionItems = transactionItems; }
+
+    public LocalDateTime getDateTime() { return this.dateTime; }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     public String toString() {

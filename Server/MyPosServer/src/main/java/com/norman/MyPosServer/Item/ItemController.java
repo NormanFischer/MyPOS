@@ -3,7 +3,7 @@ package com.norman.MyPosServer.Item;
 import java.util.List;
 import java.util.Optional;
 
-import com.norman.MyPosServer.Exceptions.InvalidItemQueryTypeException;
+import com.norman.MyPosServer.Exceptions.InvalidFilterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -58,7 +58,7 @@ public class ItemController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid filter type requested");
         } catch (NullPointerException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Null query type requested");
-        } catch (InvalidItemQueryTypeException e) {
+        } catch (InvalidFilterException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid item query type requested");
         }
     }

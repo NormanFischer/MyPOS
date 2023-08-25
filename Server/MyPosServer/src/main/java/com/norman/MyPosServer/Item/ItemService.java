@@ -1,6 +1,6 @@
 package com.norman.MyPosServer.Item;
 
-import com.norman.MyPosServer.Exceptions.InvalidItemQueryTypeException;
+import com.norman.MyPosServer.Exceptions.InvalidFilterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,20 +42,14 @@ public class ItemService {
     public List<Item> getItemsByQuery(String filter, String query) throws IllegalArgumentException {
         System.out.println("Get items by query requested!" + filter);
         ItemQueryType queryTypeObj = ItemQueryType.valueOf(filter);
-        if (queryTypeObj == null) {
-            throw new NullPointerException("Null query type requested");
-        }
-        switch(queryTypeObj) {
-            case SKU:
-                return itemRepository.listBySku(query);
-            case ITEM_NAME:
-                return itemRepository.listByName(query);
-            case COST:
+        return switch (queryTypeObj) {
+            case SKU -> itemRepository.listBySku(query);
+            case ITEM_NAME -> itemRepository.listByName(query);
+            case COST ->
                 //TODO
-                return new ArrayList<Item>();
-            default:
-                throw new InvalidItemQueryTypeException("Invalid enumerated type with query: " + query);
-        }
+            new ArrayList<Item>();
+            default -> throw new InvalidFilterException("Invalid enumerated type with query: " + query);
+        };
     }
 
 

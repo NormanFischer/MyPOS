@@ -1,6 +1,8 @@
 package com.norman.MyPosServer.Transaction;
 
+import com.norman.MyPosServer.Exceptions.InvalidFilterException;
 import com.norman.MyPosServer.Exceptions.SkuNotFoundException;
+import com.norman.MyPosServer.Item.ItemQueryType;
 import com.norman.MyPosServer.Item.ItemRepository;
 import com.norman.MyPosServer.User.User;
 import com.norman.MyPosServer.User.UserService;
@@ -9,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TransactionService {
@@ -26,6 +31,34 @@ public class TransactionService {
         this.transactionRepository = transactionRepository;
         this.itemRepository = itemRepository;
         this.userService = userService;
+    }
+
+    public List<TransactionTableEntryDTO> getTransactionsByQuery(String filter, String query) throws IllegalArgumentException {
+        System.out.println("Getting transactions by query");
+        TransactionQueryType queryTypeObj = TransactionQueryType.valueOf(filter);
+        List<Transaction> transactions;
+        switch (queryTypeObj) {
+            case USER: transactions = transactionRepository.listByUsername(query);
+                       break;
+            case DATETIME://TODO
+                    transactions = new ArrayList<>();
+                    break;
+            case TOTAL: //TODO
+                    transactions = new ArrayList<>();
+                    break;
+            default:
+                throw new InvalidFilterException("Invalid enumerated type with filter: " + filter);
+        };
+
+        //Map to DTOS
+        return transactions.stream()
+                .map(this::toTableEntryDTO)
+                .collect(Collectors.toList());
+    }
+
+    private TransactionTableEntryDTO toTableEntryDTO(Transaction transaction) {
+        return new TransactionTableEntryDTO(transaction.getUser().getUsername(),
+                                            "Datetime here!");
     }
 
     public void saveTransaction(User transactionUser, PostTransactionDTO postTransactionDTO) {
@@ -70,6 +103,7 @@ public class TransactionService {
 
         toAdd.setTransactionItems(transactionItems);
         toAdd.setUser(transactionUser);
+        toAdd.setDateTime(LocalDateTime.now());
 
         transactionRepository.save(toAdd);
         System.out.println("Transaction completed");
