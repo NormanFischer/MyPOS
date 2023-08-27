@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import DatabaseTable from "./Table/DatabaseTable";
 
-function DatabaseExplorer<T extends Record<string, any>>(props: { dataType: new () => T, apiEndpoint: string}) {
+type DatabaseExplorerProps<T extends Record<string, any>> = {
+    dataType: new () => T;
+    apiEndpoint: string;
+    rowClickFunction: ((rowData: T) => void) | null;
+}
+
+function DatabaseExplorer<T extends Record<string, any>>(props: DatabaseExplorerProps<T>) {
     const [query, setQuery] = useState("");
     const [validFilters, setValidFilters] = useState<string[]>([]);
     //TODO: Change this!
@@ -55,7 +61,7 @@ function DatabaseExplorer<T extends Record<string, any>>(props: { dataType: new 
             </select>
 
             <button onClick={async() => { applyFilter(); }}>Apply Filter</button> 
-        <DatabaseTable dataType={props.dataType} objs={objs}/>
+        <DatabaseTable dataType={props.dataType} objs={objs} rowClickFunction={props.rowClickFunction}/>
         </>
     );
 }
