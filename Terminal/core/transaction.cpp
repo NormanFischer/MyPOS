@@ -12,7 +12,7 @@ std::vector<Item>& Transaction::getItems()
     return items;
 }
 
-void Transaction::add_item(Item i)
+void Transaction::add_item(const Item &i)
 {
     getItems().push_back(i);
 }

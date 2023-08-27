@@ -11,5 +11,4 @@ public interface TransactionRepository extends CrudRepository<Transaction, Integ
     @Query(value = "SELECT transaction.* FROM transaction LEFT JOIN user ON transaction.user_id = user.id WHERE user.username LIKE %?1%", nativeQuery=true)
     List<Transaction> listByUsername(String username);
 
-
 }

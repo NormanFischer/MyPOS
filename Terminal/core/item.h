@@ -6,12 +6,14 @@
     class Item {
         private:
             std::string sku;
+            int costPer;
             int quantity;
             
         public:
-            Item(std::string sku, int quantity);
+            Item(const std::string& sku, const int quantity, const int costPer);
             const std::string getSku();
             const int getQuantity();
+            const int getCostPer();
             bool operator==(Item& otherItem);
             bool operator!=(Item& otherItem);
     };

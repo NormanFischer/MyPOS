@@ -87,7 +87,7 @@ void MainWindow::handleLoginRequest(const std::string &userName, const std::stri
 void MainWindow::handleItemAdded(ItemTableRow itemTableRow)
 {
     int newTotal = currentTransaction.getTotal() + (itemTableRow.costPer * itemTableRow.quantity);
-    currentTransaction.add_item(Item(itemTableRow.itemSKU, itemTableRow.quantity));
+    currentTransaction.add_item(Item(itemTableRow.itemSKU, itemTableRow.quantity, itemTableRow.costPer));
     currentTransaction.setTotal(newTotal);
     QString newTotalStr = QString::fromStdString(std::to_string(newTotal));
     transactionTableWidget->setTotal(newTotalStr);
@@ -96,7 +96,8 @@ void MainWindow::handleItemAdded(ItemTableRow itemTableRow)
 void MainWindow::processRequestedTransaction()
 {
     json transactionBody = ToJson::toPostTransactionDTO(currentTransaction);
-    std::string url = "/transaction/postTransaction";
+    std::cout << "Transaction body: " << transactionBody.dump() << std::endl;
+    std::string url = "/transactions/postTransaction";
     HttpResponse response = httpClient->fetch(url, HttpClient::POST, transactionBody);
     std::cout << "Response:" << response.body.dump() << std::endl;
 }

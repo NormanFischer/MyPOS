@@ -14,6 +14,9 @@ public class TransactionItem {
 
     @ManyToOne
     private Item item;
+
+    //Cost per is recorded here in case the price changes in the item table
+    private long costPer;
     private int quantity;
     private TransactionDirection direction;
 
@@ -28,6 +31,10 @@ public class TransactionItem {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    public long getCostPer() { return this.costPer; }
+
+    public void setCostPer(long costPer) { this.costPer = costPer; }
 
     public TransactionDirection getDirection() { return this.direction; }
 

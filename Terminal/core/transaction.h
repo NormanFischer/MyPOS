@@ -14,7 +14,7 @@
             std::vector<Item>& getItems();
             int getTotal();
             void setTotal(int newTotal);
-            void add_item(Item i);
+            void add_item(const Item &i);
             void delete_item();
             long int calculateTotal();
             int getUserId;

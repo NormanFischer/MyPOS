@@ -38,6 +38,15 @@ public class Transaction {
         this.dateTime = dateTime;
     }
 
+    public long getTransactionTotal() {
+        System.out.println("Getting total...");
+        long runningTotal = 0;
+        for(TransactionItem transactionItem : this.transactionItems) {
+            runningTotal += transactionItem.getCostPer() * transactionItem.getQuantity();
+        }
+        return runningTotal;
+    }
+
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("User: " + user.toString() + "\n");

@@ -40,6 +40,7 @@ public class TransactionController {
 
     @PostMapping(path="/postTransaction")
     public String postTransaction(@RequestBody PostTransactionDTO postTransactionDTO) {
+        System.out.println("DTO: " + postTransactionDTO.toString());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication != null && authentication.isAuthenticated()) {
             User authenticatedUser = (User) authentication.getPrincipal();

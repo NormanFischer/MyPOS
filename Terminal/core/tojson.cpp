@@ -8,6 +8,7 @@ json ToJson::fromItem(Item &item)
 {
     json itemData;
     itemData["sku"] = item.getSku();
+    itemData["costPer"] = item.getCostPer();
     itemData["quantity"] = item.getQuantity();
     return itemData;
 }

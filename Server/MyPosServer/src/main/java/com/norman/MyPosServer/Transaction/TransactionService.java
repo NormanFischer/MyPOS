@@ -1,6 +1,7 @@
 package com.norman.MyPosServer.Transaction;
 
 import com.norman.MyPosServer.Exceptions.InvalidFilterException;
+import com.norman.MyPosServer.Exceptions.InvalidSubTotalException;
 import com.norman.MyPosServer.Exceptions.SkuNotFoundException;
 import com.norman.MyPosServer.Item.ItemQueryType;
 import com.norman.MyPosServer.Item.ItemRepository;
@@ -50,7 +51,7 @@ public class TransactionService {
                 throw new InvalidFilterException("Invalid enumerated type with filter: " + filter);
         };
 
-        //Map to DTOS
+        //Map to DTOs
         return transactions.stream()
                 .map(this::toTableEntryDTO)
                 .collect(Collectors.toList());
@@ -58,7 +59,8 @@ public class TransactionService {
 
     private TransactionTableEntryDTO toTableEntryDTO(Transaction transaction) {
         return new TransactionTableEntryDTO(transaction.getUser().getUsername(),
-                                            "Datetime here!");
+                                            transaction.getDateTime().toString(),
+                                            transaction.getTransactionTotal());
     }
 
     public void saveTransaction(User transactionUser, PostTransactionDTO postTransactionDTO) {
@@ -77,8 +79,12 @@ public class TransactionService {
         try {
             isValidTotal = verifyTotal(postTransactionDTO);
         } catch (SkuNotFoundException e) {
-            System.out.println("Sku was not found when verifying total");
+            System.out.println("Sku was not found when verifying total, aborting...");
             return;
+        } catch (InvalidSubTotalException e) {
+            System.out.println("Subtotal found in an item DTO mismatches with server-side subTotal, aborting...");
+            System.out.println("Server Subtotal: " + e.getServerSubTotal());
+            System.out.println("Client Subtotal: " + e.getClass());
         }
 
         if (!isValidTotal) {
@@ -98,6 +104,7 @@ public class TransactionService {
             //TODO: Change depending on transaction direction request
             transactionItem.setTransactionDirection(TransactionDirection.CUSTOMER_PURCHASE);
             transactionItem.setTransaction(toAdd);
+            transactionItem.setCostPer(itemRef.get().getCost());
             transactionItems.add(transactionItem);
         }
 
@@ -110,21 +117,30 @@ public class TransactionService {
         System.out.println(toAdd.toString());
     }
 
-    private boolean verifyTotal(PostTransactionDTO postTransactionDTO) throws SkuNotFoundException {
-        BigInteger serverTotal = getServerSideTotal(postTransactionDTO);
-        return serverTotal.equals(postTransactionDTO.getTotal());
+    private boolean verifyTotal(PostTransactionDTO postTransactionDTO) throws SkuNotFoundException,
+            InvalidSubTotalException {
+        long serverTotal = getServerSideTotal(postTransactionDTO);
+        return serverTotal == postTransactionDTO.getTotal();
     }
 
-    private BigInteger getServerSideTotal(PostTransactionDTO postTransactionDTO) throws SkuNotFoundException {
-        BigInteger runningTotal = BigInteger.valueOf(0);
+    private long getServerSideTotal(PostTransactionDTO postTransactionDTO) throws SkuNotFoundException,
+            InvalidSubTotalException {
+        long runningTotal = 0;
         for (TransactionItemDTO itemDTO : postTransactionDTO.getItems()) {
             String sku = itemDTO.getSku();
-            Optional<BigInteger> itemCost = itemRepository.getCostBySku(sku);
+            Optional<Long> itemCost = itemRepository.getCostBySku(sku);
             if (itemCost.isEmpty()) {
-                throw new SkuNotFoundException("Invalid subtotal for sku: " + sku);
+                throw new SkuNotFoundException("Invalid cost for sku: " + sku);
             } else {
-                BigInteger subTotal = itemCost.get().multiply(BigInteger.valueOf(itemDTO.getQuantity()));
-                runningTotal = runningTotal.add(subTotal);
+                long serverSubTotal = itemCost.get() * itemDTO.getQuantity();
+                long clientSubTotal = itemDTO.getSubTotal();
+                System.out.println("CLIENT: " + clientSubTotal);
+
+                if(serverSubTotal != clientSubTotal) {
+                    throw new InvalidSubTotalException(serverSubTotal, clientSubTotal,
+                            "Server-Client subtotal mismatch for sku: " + itemDTO.getSku());
+                }
+                runningTotal += serverSubTotal;
             }
         }
         System.out.println("Server Total: " + runningTotal);
